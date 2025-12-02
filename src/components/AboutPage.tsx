@@ -1,28 +1,28 @@
 import { Award, MapPin, Mail, Phone, Instagram, Globe } from 'lucide-react';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface AboutPageProps {
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
   cartItemCount: number;
 }
 
-export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
+export function AboutPage({ cartItemCount }: AboutPageProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen">
       <Navigation
-        onNavigate={onNavigate}
         cartItemCount={cartItemCount}
-        currentView="about"
       />
 
       {/* Hero */}
       <section className="py-16 lg:py-24 border-b border-zinc-800">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="mb-6">About Elena Virtanen</h1>
+            <h1 className="mb-6">About Otto Saarimaa</h1>
             <p className="text-zinc-300 text-lg">
-              Contemporary artist exploring the boundaries of abstract expression 
+              Contemporary artist exploring the boundaries of abstract expression
               and minimalist design through bold colors and innovative techniques.
             </p>
           </div>
@@ -38,7 +38,7 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
               <div className="relative bg-zinc-900 rounded-lg overflow-hidden aspect-[4/5]">
                 <img
                   src="https://images.unsplash.com/photo-1610915965290-be9ee44cd034?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc3QlMjBzdHVkaW8lMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjQ2NzY1NDB8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Elena Virtanen"
+                  alt="Otto Saarimaa"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -55,20 +55,20 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
             <div className="space-y-8">
               <div className="space-y-4 text-zinc-300 leading-relaxed">
                 <p>
-                  Born in Helsinki, Finland, Elena Virtanen has been creating art for over 
-                  a decade, developing a distinctive style that merges contemporary abstract 
+                  Born in Vaasa, Finland, Otto Saarimaa has been creating art for over
+                  a decade, developing a distinctive style that merges contemporary abstract
                   expressionism with Nordic minimalism.
                 </p>
                 <p>
-                  Her work is characterized by bold use of color, dynamic compositions, and 
-                  a deep exploration of emotional resonance through visual form. Each piece 
-                  is an investigation into the relationship between viewer and artwork, 
+                  His work is characterized by bold use of color, dynamic compositions, and
+                  a deep exploration of emotional resonance through visual form. Each piece
+                  is an investigation into the relationship between viewer and artwork,
                   creating spaces for contemplation and emotional engagement.
                 </p>
                 <p>
-                  Elena's paintings are held in private collections across Europe, North America, 
-                  and Asia, and have been featured in numerous exhibitions and galleries. She 
-                  works exclusively with premium archival materials to ensure the longevity 
+                  Otto's paintings are held in private collections across Europe, North America,
+                  and Asia, and have been featured in numerous exhibitions and galleries. He
+                  works exclusively with premium archival materials to ensure the longevity
                   and museum-quality presentation of each piece.
                 </p>
               </div>
@@ -110,12 +110,12 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-zinc-300">
                     <MapPin className="w-5 h-5 text-zinc-400" />
-                    <span>Helsinki, Finland</span>
+                    <span>Vaasa, Finland</span>
                   </div>
                   <div className="flex items-center gap-3 text-zinc-300">
                     <Mail className="w-5 h-5 text-zinc-400" />
-                    <a href="mailto:info@elenavirtanen.art" className="hover:text-zinc-100 transition-colors">
-                      info@elenavirtanen.art
+                    <a href="mailto:osaarimaa@gmail.com" className="hover:text-zinc-100 transition-colors">
+                      osaarimaa@gmail.com
                     </a>
                   </div>
                   <div className="flex items-center gap-3 text-zinc-300">
@@ -143,7 +143,7 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
               </div>
 
               <Button
-                onClick={() => onNavigate('gallery')}
+                onClick={() => navigate('/gallery')}
                 className="bg-zinc-100 text-zinc-950 hover:bg-zinc-200 w-full sm:w-auto"
                 size="lg"
               >
@@ -160,12 +160,12 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Artistic Philosophy</h2>
             <blockquote className="text-zinc-300 text-lg italic leading-relaxed">
-              "Art should not merely decorate walls, but transform spaces and evoke emotions. 
-              Each piece I create is an invitation to pause, reflect, and connect with something 
-              deeper within ourselves. Through color, form, and texture, I seek to create visual 
+              "Art should not merely decorate walls, but transform spaces and evoke emotions.
+              Each piece I create is an invitation to pause, reflect, and connect with something
+              deeper within ourselves. Through color, form, and texture, I seek to create visual
               poetry that resonates on a personal level with each viewer."
             </blockquote>
-            <div className="mt-6 text-zinc-400">— Elena Virtanen</div>
+            <div className="mt-6 text-zinc-400">— Otto Saarimaa</div>
           </div>
         </div>
       </section>
@@ -213,7 +213,7 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="mb-4">Elena Virtanen Studio</h3>
+              <h3 className="mb-4">Otto Saarimaa Studio</h3>
               <p className="text-zinc-400 text-sm">
                 Contemporary art for collectors worldwide
               </p>
@@ -221,13 +221,13 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
             <div>
               <div className="text-zinc-400 mb-3">Shop</div>
               <div className="space-y-2">
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   All Works
                 </button>
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   Abstract
                 </button>
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   Minimalist
                 </button>
               </div>
@@ -235,7 +235,7 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
             <div>
               <div className="text-zinc-400 mb-3">Information</div>
               <div className="space-y-2">
-                <button onClick={() => onNavigate('about')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/about')} className="block text-sm hover:text-zinc-100 transition-colors">
                   About
                 </button>
                 <a href="#" className="block text-sm hover:text-zinc-100 transition-colors">
@@ -249,14 +249,14 @@ export function AboutPage({ onNavigate, cartItemCount }: AboutPageProps) {
             <div>
               <div className="text-zinc-400 mb-3">Contact</div>
               <div className="space-y-2 text-sm">
-                <p>Helsinki, Finland</p>
-                <p>info@elenavirtanen.art</p>
+                <p>Vaasa, Finland</p>
+                <p>osaarimaa@gmail.com</p>
                 <p>+358 40 123 4567</p>
               </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-zinc-800 text-center text-zinc-400 text-sm">
-            <p>© 2024 Elena Virtanen Studio. All rights reserved.</p>
+            <p>© 2024 Otto Saarimaa Studio. All rights reserved.</p>
           </div>
         </div>
       </footer>

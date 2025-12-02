@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { Product } from '../App';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface GalleryPageProps {
   products: Product[];
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
   onViewProduct: (product: Product) => void;
   cartItemCount: number;
 }
 
-export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount }: GalleryPageProps) {
+export function GalleryPage({ products, onViewProduct, cartItemCount }: GalleryPageProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const navigate = useNavigate();
 
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -22,9 +23,7 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
   return (
     <div className="min-h-screen">
       <Navigation
-        onNavigate={onNavigate}
         cartItemCount={cartItemCount}
-        currentView="gallery"
       />
 
       {/* Header */}
@@ -33,7 +32,7 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
           <div className="max-w-3xl">
             <h1 className="mb-6">Collection</h1>
             <p className="text-zinc-300 text-lg">
-              Browse our complete collection of original artworks. Each piece is 
+              Browse our complete collection of original artworks. Each piece is
               carefully crafted and comes with certificate of authenticity.
             </p>
           </div>
@@ -48,11 +47,10 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
-                  selectedCategory === category
+                className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${selectedCategory === category
                     ? 'bg-zinc-100 text-zinc-950'
                     : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100'
-                }`}
+                  }`}
               >
                 {category}
               </button>
@@ -78,7 +76,7 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
                 <div
                   key={product.id}
                   className="group cursor-pointer"
-                  onClick={() => onViewProduct(product)}
+                  onClick={() => navigate(`/product/${product.id}`)}
                 >
                   <div className="relative bg-zinc-900 rounded-lg overflow-hidden mb-4">
                     <img
@@ -130,7 +128,7 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="mb-4">Elena Virtanen Studio</h3>
+              <h3 className="mb-4">Otto Saarimaa Studio</h3>
               <p className="text-zinc-400 text-sm">
                 Contemporary art for collectors worldwide
               </p>
@@ -152,7 +150,7 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
             <div>
               <div className="text-zinc-400 mb-3">Information</div>
               <div className="space-y-2">
-                <button onClick={() => onNavigate('about')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/about')} className="block text-sm hover:text-zinc-100 transition-colors">
                   About
                 </button>
                 <a href="#" className="block text-sm hover:text-zinc-100 transition-colors">
@@ -166,14 +164,14 @@ export function GalleryPage({ products, onNavigate, onViewProduct, cartItemCount
             <div>
               <div className="text-zinc-400 mb-3">Contact</div>
               <div className="space-y-2 text-sm">
-                <p>Helsinki, Finland</p>
-                <p>info@elenavirtanen.art</p>
+                <p>Vaasa, Finland</p>
+                <p>osaarimaa@gmail.com</p>
                 <p>+358 40 123 4567</p>
               </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-zinc-800 text-center text-zinc-400 text-sm">
-            <p>© 2024 Elena Virtanen Studio. All rights reserved.</p>
+            <p>© 2024 Otto Saarimaa Studio. All rights reserved.</p>
           </div>
         </div>
       </footer>

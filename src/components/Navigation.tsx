@@ -1,54 +1,59 @@
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavigationProps {
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
   cartItemCount: number;
-  currentView?: string;
 }
 
-export function Navigation({ onNavigate, cartItemCount, currentView }: NavigationProps) {
+export function Navigation({ cartItemCount }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const currentView = location.pathname;
 
   const navItems = [
-    { label: 'Home', view: 'home' as const },
-    { label: 'Gallery', view: 'gallery' as const },
-    { label: 'About', view: 'about' as const },
+    { label: 'Home', path: '/' },
+    { label: 'Gallery', path: '/gallery' },
+    { label: 'About', path: '/about' },
   ];
+
+  const isActive = (path: string) => {
+    if (path === '/' && currentView !== '/') return false;
+    return currentView.startsWith(path);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
-          <button
-            onClick={() => onNavigate('home')}
+          <Link
+            to="/"
             className="tracking-tight hover:text-zinc-300 transition-colors"
           >
-            Elena Virtanen Studio
-          </button>
+            Otto Saarimaa Studio
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map(item => (
-              <button
-                key={item.view}
-                onClick={() => onNavigate(item.view)}
-                className={`text-sm tracking-wide transition-colors ${
-                  currentView === item.view
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-sm tracking-wide transition-colors ${isActive(item.path)
                     ? 'text-zinc-100'
                     : 'text-zinc-400 hover:text-zinc-100'
-                }`}
+                  }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </nav>
 
           {/* Cart & Mobile Menu */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => onNavigate('cart')}
+            <Link
+              to="/cart"
               className="relative p-2 hover:bg-zinc-800 rounded-full transition-colors"
             >
               <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -57,7 +62,7 @@ export function Navigation({ onNavigate, cartItemCount, currentView }: Navigatio
                   {cartItemCount}
                 </span>
               )}
-            </button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <button
@@ -78,20 +83,17 @@ export function Navigation({ onNavigate, cartItemCount, currentView }: Navigatio
           <nav className="md:hidden py-4 border-t border-zinc-800">
             <div className="space-y-1">
               {navItems.map(item => (
-                <button
-                  key={item.view}
-                  onClick={() => {
-                    onNavigate(item.view);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                    currentView === item.view
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${isActive(item.path)
                       ? 'bg-zinc-800 text-zinc-100'
                       : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'
-                  }`}
+                    }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
             </div>
           </nav>

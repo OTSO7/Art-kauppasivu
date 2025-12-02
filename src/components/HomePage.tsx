@@ -2,21 +2,21 @@ import { ArrowRight, ShoppingCart, Shield, Truck, Award, RotateCcw } from 'lucid
 import { Product } from '../App';
 import { Button } from './ui/button';
 import { Navigation } from './Navigation';
+import { useNavigate } from 'react-router-dom';
 
 interface HomePageProps {
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
   onViewProduct: (product: Product) => void;
   cartItemCount: number;
   featuredProducts: Product[];
 }
 
-export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredProducts }: HomePageProps) {
+export function HomePage({ onViewProduct, cartItemCount, featuredProducts }: HomePageProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen">
       <Navigation
-        onNavigate={onNavigate}
         cartItemCount={cartItemCount}
-        currentView="home"
       />
 
       {/* Hero Section */}
@@ -34,15 +34,15 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
               <span className="text-zinc-400">Limited Edition Collection 2024</span>
             </div>
             <h1 className="mb-6 text-5xl md:text-6xl lg:text-7xl">
-              Original Artworks by Elena Virtanen
+              Original Artworks by Otto Saarimaa
             </h1>
             <p className="text-zinc-300 mb-8 text-lg md:text-xl max-w-2xl">
-              Discover unique contemporary pieces that transform your space. 
+              Discover unique contemporary pieces that transform your space.
               Each artwork is an original creation, signed and authenticated.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={() => onNavigate('gallery')}
+                onClick={() => navigate('/gallery')}
                 className="bg-zinc-100 text-zinc-950 hover:bg-zinc-200 h-14 px-8"
                 size="lg"
               >
@@ -50,7 +50,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <Button
-                onClick={() => onNavigate('about')}
+                onClick={() => navigate('/about')}
                 variant="outline"
                 className="border-zinc-700 hover:bg-zinc-900 h-14 px-8"
                 size="lg"
@@ -117,7 +117,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
               </p>
             </div>
             <Button
-              onClick={() => onNavigate('gallery')}
+              onClick={() => navigate('/gallery')}
               variant="outline"
               className="border-zinc-700 hover:bg-zinc-900 hidden sm:flex"
             >
@@ -136,7 +136,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
                 <div
                   key={product.id}
                   className="group cursor-pointer"
-                  onClick={() => onViewProduct(product)}
+                  onClick={() => navigate(`/product/${product.id}`)}
                 >
                   <div className="relative bg-zinc-900 rounded-lg overflow-hidden mb-4">
                     <img
@@ -176,7 +176,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
 
           <div className="mt-8 flex justify-center sm:hidden">
             <Button
-              onClick={() => onNavigate('gallery')}
+              onClick={() => navigate('/gallery')}
               variant="outline"
               className="border-zinc-700 hover:bg-zinc-900 w-full"
             >
@@ -195,19 +195,19 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
               <div className="inline-block px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full mb-6">
                 <span className="text-zinc-400">About the Artist</span>
               </div>
-              <h2 className="mb-6">Elena Virtanen</h2>
+              <h2 className="mb-6">Otto Saarimaa</h2>
               <div className="space-y-4 text-zinc-300 leading-relaxed">
                 <p>
-                  Finnish contemporary artist based in Helsinki, creating bold abstract and 
+                  Finnish contemporary artist based in Vaasa, creating bold abstract and
                   minimalist works that explore the relationship between color, form, and emotion.
                 </p>
                 <p>
-                  With over a decade of experience, Elena's work has been featured in galleries 
-                  across Europe and is held in private collections worldwide.
+                  With a passion for digital and traditional mediums, Otto's work bridges the gap
+                  between modern design and classical artistic expression.
                 </p>
               </div>
               <Button
-                onClick={() => onNavigate('about')}
+                onClick={() => navigate('/about')}
                 variant="outline"
                 className="border-zinc-700 hover:bg-zinc-900 mt-8"
                 size="lg"
@@ -220,7 +220,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
               <div className="relative bg-zinc-900 rounded-lg overflow-hidden aspect-[4/5]">
                 <img
                   src="https://images.unsplash.com/photo-1610915965290-be9ee44cd034?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc3QlMjBzdHVkaW8lMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjQ2NzY1NDB8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Elena Virtanen"
+                  alt="Otto Saarimaa"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -235,11 +235,11 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Start Your Collection Today</h2>
             <p className="text-zinc-300 mb-8 text-lg">
-              Own an original piece of contemporary art. Each work comes with 
+              Own an original piece of contemporary art. Each work comes with
               authenticity certificate and worldwide insured shipping.
             </p>
             <Button
-              onClick={() => onNavigate('gallery')}
+              onClick={() => navigate('/gallery')}
               className="bg-zinc-100 text-zinc-950 hover:bg-zinc-200 h-14 px-8"
               size="lg"
             >
@@ -255,7 +255,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="mb-4">Elena Virtanen Studio</h3>
+              <h3 className="mb-4">Otto Saarimaa Studio</h3>
               <p className="text-zinc-400 text-sm">
                 Contemporary art for collectors worldwide
               </p>
@@ -263,13 +263,13 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
             <div>
               <div className="text-zinc-400 mb-3">Shop</div>
               <div className="space-y-2">
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   All Works
                 </button>
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   Abstract
                 </button>
-                <button onClick={() => onNavigate('gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/gallery')} className="block text-sm hover:text-zinc-100 transition-colors">
                   Minimalist
                 </button>
               </div>
@@ -277,7 +277,7 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
             <div>
               <div className="text-zinc-400 mb-3">Information</div>
               <div className="space-y-2">
-                <button onClick={() => onNavigate('about')} className="block text-sm hover:text-zinc-100 transition-colors">
+                <button onClick={() => navigate('/about')} className="block text-sm hover:text-zinc-100 transition-colors">
                   About
                 </button>
                 <a href="#" className="block text-sm hover:text-zinc-100 transition-colors">
@@ -291,14 +291,14 @@ export function HomePage({ onNavigate, onViewProduct, cartItemCount, featuredPro
             <div>
               <div className="text-zinc-400 mb-3">Contact</div>
               <div className="space-y-2 text-sm">
-                <p>Helsinki, Finland</p>
-                <p>info@elenavirtanen.art</p>
+                <p>Vaasa, Finland</p>
+                <p>osaarimaa@gmail.com</p>
                 <p>+358 40 123 4567</p>
               </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-zinc-800 text-center text-zinc-400 text-sm">
-            <p>© 2024 Elena Virtanen Studio. All rights reserved.</p>
+            <p>© 2024 Otto Saarimaa Studio. All rights reserved.</p>
           </div>
         </div>
       </footer>

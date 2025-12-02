@@ -1,27 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingCart, Shield, RotateCcw, Truck, Award, ZoomIn, X } from 'lucide-react';
 import { Product } from '../App';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Navigation } from './Navigation';
+import { useParams, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 
 interface ProductPageProps {
-  product: Product;
+  products: Product[];
   onAddToCart: (product: Product) => void;
   cartItemCount: number;
-  onViewCart: () => void;
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
 }
 
-export function ProductPage({ product, onAddToCart, cartItemCount, onViewCart, onNavigate }: ProductPageProps) {
+export function ProductPage({ products, onAddToCart, cartItemCount }: ProductPageProps) {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const product = products.find(p => p.id === id);
+
+  useEffect(() => {
+    if (!product) {
+      navigate('/gallery');
+    }
+  }, [product, navigate]);
+
+  if (!product) return null;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     setMousePosition({ x, y });
+  };
+
+  const handleAddToCart = () => {
+    onAddToCart(product);
+    toast.success(`Added ${product.title} to cart`);
   };
 
   const discount = product.originalPrice
@@ -31,23 +49,27 @@ export function ProductPage({ product, onAddToCart, cartItemCount, onViewCart, o
   return (
     <div className="min-h-screen">
       <Navigation
-        onNavigate={onNavigate}
         cartItemCount={cartItemCount}
-        currentView="product"
       />
 
       {/* Product Section */}
       <div className="container mx-auto px-4 py-8 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image Section */}
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-4"
+          >
             <div className="relative group">
               <div
                 className="relative bg-zinc-900 rounded-lg overflow-hidden cursor-zoom-in"
                 onClick={() => setIsZoomed(true)}
                 onMouseMove={handleMouseMove}
               >
-                <img
+                <motion.img
+                  layoutId={`product-image-${product.id}`}
                   src={product.image}
                   alt={product.title}
                   className="w-full h-auto aspect-[4/5] object-cover"
@@ -96,10 +118,15 @@ export function ProductPage({ product, onAddToCart, cartItemCount, onViewCart, o
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Product Details */}
-          <div className="lg:pt-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:pt-8"
+          >
             <div className="space-y-6">
               <div>
                 <div className="text-zinc-400 mb-2">By {product.artist}</div>
@@ -142,7 +169,7 @@ export function ProductPage({ product, onAddToCart, cartItemCount, onViewCart, o
               <div className="h-px bg-zinc-800" />
 
               <Button
-                onClick={() => onAddToCart(product)}
+                onClick={handleAddToCart}
                 className="w-full bg-zinc-100 text-zinc-950 hover:bg-zinc-200 h-14"
                 size="lg"
               >
@@ -155,37 +182,45 @@ export function ProductPage({ product, onAddToCart, cartItemCount, onViewCart, o
                 <span>Secure checkout with SSL encryption</span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Zoom Modal */}
-      {isZoomed && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setIsZoomed(false)}
-        >
-          <button
-            className="absolute top-4 right-4 p-2 bg-zinc-900 hover:bg-zinc-800 rounded-full transition-colors"
+      <AnimatePresence>
+        {isZoomed && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
             onClick={() => setIsZoomed(false)}
           >
-            <X className="w-6 h-6" />
-          </button>
-          <div
-            className="relative max-w-6xl max-h-[90vh] overflow-hidden cursor-zoom-out"
-            onMouseMove={handleMouseMove}
-          >
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-full object-contain"
-              style={{
-                transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
-              }}
-            />
-          </div>
-        </div>
-      )}
+            <button
+              className="absolute top-4 right-4 p-2 bg-zinc-900 hover:bg-zinc-800 rounded-full transition-colors"
+              onClick={() => setIsZoomed(false)}
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              className="relative max-w-6xl max-h-[90vh] overflow-hidden cursor-zoom-out"
+              onMouseMove={handleMouseMove}
+            >
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-full object-contain"
+                style={{
+                  transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

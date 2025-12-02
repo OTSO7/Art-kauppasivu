@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { HomePage } from './components/HomePage';
 import { GalleryPage } from './components/GalleryPage';
 import { AboutPage } from './components/AboutPage';
 import { ProductPage } from './components/ProductPage';
 import { ShoppingCart } from './components/ShoppingCart';
 import { CheckoutForm } from './components/CheckoutForm';
+import { ScrollToTop } from './components/ScrollToTop';
 
 export interface Product {
   id: string;
@@ -29,7 +32,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '1',
     title: 'Abstract Harmony',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 1299,
     originalPrice: 1599,
     image: 'https://images.unsplash.com/photo-1681235014294-588fea095706?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGFydCUyMHBhaW50aW5nfGVufDF8fHx8MTc2NDY0MzMyOXww&ixlib=rb-4.1.0&q=80&w=1080',
@@ -43,7 +46,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '2',
     title: 'Minimalist Serenity',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 899,
     image: 'https://images.unsplash.com/photo-1580136607993-fd598cf5c4f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwcGFpbnRpbmd8ZW58MXx8fHwxNzY0NTk3NTI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Peaceful minimalist composition that embodies tranquility and balance. Perfect for modern interiors seeking calm sophistication.',
@@ -56,7 +59,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '3',
     title: 'Contemporary Vision',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 1499,
     image: 'https://images.unsplash.com/photo-1720802703504-a5b28e0edb40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcnR3b3JrfGVufDF8fHx8MTc2NDU4NzU0Nnww&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Bold contemporary piece with striking composition. A statement artwork that commands attention and conversation.',
@@ -69,7 +72,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '4',
     title: 'Color Symphony',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 1099,
     originalPrice: 1399,
     image: 'https://images.unsplash.com/photo-1705254613735-1abb457f8a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xvcmZ1bCUyMGFic3RyYWN0JTIwYXJ0fGVufDF8fHx8MTc2NDYyMTQ4MXww&ixlib=rb-4.1.0&q=80&w=1080',
@@ -83,7 +86,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '5',
     title: 'Classical Beauty',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 1799,
     image: 'https://images.unsplash.com/photo-1522878308970-972ec5eedc0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb250ZW1wb3JhcnklMjBhcnR8ZW58MXx8fHwxNzY0NjI5NjU3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Timeless elegance meets contemporary technique. A sophisticated piece for collectors who appreciate refined artistry.',
@@ -96,7 +99,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '6',
     title: 'Fluid Dreams',
-    artist: 'Elena Virtanen',
+    artist: 'Otto Saarimaa',
     price: 799,
     image: 'https://images.unsplash.com/photo-1713815539197-78db123d8f3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXRlcmNvbG9yJTIwcGFpbnRpbmd8ZW58MXx8fHwxNzY0NjQzMzMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Delicate watercolor composition that evokes emotion and movement. A subtle yet powerful addition to any collection.',
@@ -108,12 +111,8 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
-type ViewType = 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout';
-
 export default function App() {
-  const [view, setView] = useState<ViewType>('home');
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -127,7 +126,6 @@ export default function App() {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-    setView('cart');
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -154,73 +152,77 @@ export default function App() {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
 
-  const handleViewProduct = (product: Product) => {
-    setSelectedProduct(product);
-    setView('product');
-  };
-
-  const navigateTo = (newView: ViewType) => {
-    setView(newView);
+  const clearCart = () => {
+    setCart([]);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      {view === 'home' && (
-        <HomePage
-          onNavigate={navigateTo}
-          onViewProduct={handleViewProduct}
-          cartItemCount={getTotalItems()}
-          featuredProducts={PRODUCTS.slice(0, 3)}
-        />
-      )}
-
-      {view === 'gallery' && (
-        <GalleryPage
-          products={PRODUCTS}
-          onNavigate={navigateTo}
-          onViewProduct={handleViewProduct}
-          cartItemCount={getTotalItems()}
-        />
-      )}
-
-      {view === 'about' && (
-        <AboutPage
-          onNavigate={navigateTo}
-          cartItemCount={getTotalItems()}
-        />
-      )}
-
-      {view === 'product' && selectedProduct && (
-        <ProductPage
-          product={selectedProduct}
-          onAddToCart={addToCart}
-          cartItemCount={getTotalItems()}
-          onViewCart={() => setView('cart')}
-          onNavigate={navigateTo}
-        />
-      )}
-
-      {view === 'cart' && (
-        <ShoppingCart
-          items={cart}
-          onUpdateQuantity={updateQuantity}
-          onRemoveItem={removeFromCart}
-          onContinueShopping={() => setView('gallery')}
-          onCheckout={() => setView('checkout')}
-          onNavigate={navigateTo}
-          cartItemCount={getTotalItems()}
-        />
-      )}
-
-      {view === 'checkout' && (
-        <CheckoutForm
-          items={cart}
-          subtotal={getSubtotal()}
-          onBack={() => setView('cart')}
-          onNavigate={navigateTo}
-          cartItemCount={getTotalItems()}
-        />
-      )}
-    </div>
+    <Router>
+      <ScrollToTop />
+      <Toaster position="top-center" theme="dark" />
+      <div className="min-h-screen bg-zinc-950 text-zinc-100">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                cartItemCount={getTotalItems()}
+                featuredProducts={PRODUCTS.slice(0, 3)}
+              />
+            }
+          />
+          <Route
+            path="/gallery"
+            element={
+              <GalleryPage
+                products={PRODUCTS}
+                cartItemCount={getTotalItems()}
+              />
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <AboutPage
+                cartItemCount={getTotalItems()}
+              />
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductPage
+                products={PRODUCTS}
+                onAddToCart={addToCart}
+                cartItemCount={getTotalItems()}
+              />
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ShoppingCart
+                items={cart}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeFromCart}
+                cartItemCount={getTotalItems()}
+              />
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <CheckoutForm
+                items={cart}
+                subtotal={getSubtotal()}
+                onClearCart={clearCart}
+                cartItemCount={getTotalItems()}
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }

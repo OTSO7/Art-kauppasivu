@@ -1,22 +1,23 @@
 import { useState } from 'react';
-import { ArrowLeft, Lock, CreditCard, Package, CheckCircle2 } from 'lucide-react';
+import { Lock, CreditCard, Package, CheckCircle2 } from 'lucide-react';
 import { CartItem } from '../App';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Navigation } from './Navigation';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckoutFormProps {
   items: CartItem[];
   subtotal: number;
-  onBack: () => void;
-  onNavigate: (view: 'home' | 'gallery' | 'about' | 'product' | 'cart' | 'checkout') => void;
+  onClearCart: () => void;
   cartItemCount: number;
 }
 
-export function CheckoutForm({ items, subtotal, onBack, onNavigate, cartItemCount }: CheckoutFormProps) {
+export function CheckoutForm({ items, subtotal, onClearCart, cartItemCount }: CheckoutFormProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const navigate = useNavigate();
 
   const shipping = 0;
   const total = subtotal + shipping;
@@ -24,11 +25,12 @@ export function CheckoutForm({ items, subtotal, onBack, onNavigate, cartItemCoun
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
-    
+
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setIsComplete(true);
+      onClearCart();
     }, 2000);
   };
 
@@ -36,9 +38,7 @@ export function CheckoutForm({ items, subtotal, onBack, onNavigate, cartItemCoun
     return (
       <>
         <Navigation
-          onNavigate={onNavigate}
           cartItemCount={0}
-          currentView="checkout"
         />
         <div className="min-h-screen flex items-center justify-center px-4">
           <div className="max-w-md w-full text-center">
@@ -50,7 +50,7 @@ export function CheckoutForm({ items, subtotal, onBack, onNavigate, cartItemCoun
               Thank you for your purchase. You will receive a confirmation email shortly with tracking information.
             </p>
             <Button
-              onClick={() => onNavigate('home')}
+              onClick={() => navigate('/')}
               className="bg-zinc-100 text-zinc-950 hover:bg-zinc-200"
             >
               Back to Home
@@ -64,9 +64,7 @@ export function CheckoutForm({ items, subtotal, onBack, onNavigate, cartItemCoun
   return (
     <div className="min-h-screen">
       <Navigation
-        onNavigate={onNavigate}
         cartItemCount={cartItemCount}
-        currentView="checkout"
       />
 
       <div className="container mx-auto px-4 py-8 lg:py-16">
