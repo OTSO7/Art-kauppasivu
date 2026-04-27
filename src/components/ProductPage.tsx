@@ -7,6 +7,7 @@ import { Navigation } from './Navigation';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import confetti from 'canvas-confetti';
 
 interface ProductPageProps {
   products: Product[];
@@ -19,6 +20,7 @@ export function ProductPage({ products, onAddToCart, cartItemCount }: ProductPag
   const navigate = useNavigate();
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
 
   const product = products.find(p => p.id === id);
 
@@ -37,9 +39,44 @@ export function ProductPage({ products, onAddToCart, cartItemCount }: ProductPag
     setMousePosition({ x, y });
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Get click coordinates for confetti
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+
+    // Trigger confetti from cursor position
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { x, y },
+      colors: ['#f4f4f5', '#a1a1aa', '#52525b', '#ffffff'],
+      disableForReducedMotion: true,
+      zIndex: 9999, // Ensure it's on top of everything
+      gravity: 1,
+      scalar: 1,
+      ticks: 300
+    });
+
     onAddToCart(product);
-    toast.success(`Added ${product.title} to cart`);
+
+    toast.success(
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 bg-zinc-800 rounded overflow-hidden flex-shrink-0">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <div className="font-medium">Added to Cart</div>
+          <div className="text-xs text-zinc-400">{product.title}</div>
+        </div>
+      </div>,
+      {
+        duration: 4000,
+      }
+    );
   };
 
   const discount = product.originalPrice
@@ -47,10 +84,12 @@ export function ProductPage({ products, onAddToCart, cartItemCount }: ProductPag
     : 0;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Navigation
         cartItemCount={cartItemCount}
       />
+
+
 
       {/* Product Section */}
       <div className="container mx-auto px-4 py-8 lg:py-16">

@@ -24,9 +24,23 @@ export function ShoppingCart({
   const shipping = 0; // Free shipping
   const total = subtotal + shipping;
 
-  const handleRemoveItem = (id: string, title: string) => {
+  const handleRemoveItem = (id: string, title: string, image: string) => {
     onRemoveItem(id);
-    toast.error(`Removed ${title} from cart`);
+    toast.error(
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 bg-zinc-800 rounded overflow-hidden flex-shrink-0">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <div className="font-medium">Removed from Cart</div>
+          <div className="text-xs text-zinc-200">{title}</div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -81,7 +95,7 @@ export function ShoppingCart({
                             <div className="text-zinc-400 text-sm">By {item.artist}</div>
                           </div>
                           <button
-                            onClick={() => handleRemoveItem(item.id, item.title)}
+                            onClick={() => handleRemoveItem(item.id, item.title, item.image)}
                             className="p-2 hover:bg-zinc-800 rounded-lg transition-colors h-fit"
                           >
                             <Trash2 className="w-5 h-5 text-zinc-400" />
