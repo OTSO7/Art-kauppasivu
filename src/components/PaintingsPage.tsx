@@ -7,13 +7,13 @@ export default function PaintingsPage() {
 
     return (
         <div className="container">
-            <section className="page-hero">
+            <section className="hero" style={{ paddingBottom: '2rem' }}>
                 <span className="hero-tag">01 — Paintings</span>
-                <h1 className="page-heading">Paintings</h1>
-                <p className="page-desc">
-                    Oil on canvas and mixed media works exploring texture, color,
-                    and emotional depth.
-                </p>
+                <h1>Paintings</h1>
+
+                <br />
+                <br />
+                <br />
             </section>
 
             <div className="artwork-grid paintings-grid">

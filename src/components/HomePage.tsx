@@ -7,10 +7,9 @@ export default function HomePage() {
       {/* hero */}
       <section className="hero">
         <span className="hero-tag">Visual Artist &amp; Photographer</span>
-        <h1>Visual <em>Journal</em></h1>
+        <h1>Selected Works</h1>
         <p className="hero-intro">
-          Paintings, photography, and mixed media — exploring texture,
-          atmosphere, and the quiet tension between light and darkness.
+          Recent personal and commissioned work.
         </p>
       </section>
 

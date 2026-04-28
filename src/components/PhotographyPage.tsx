@@ -7,13 +7,16 @@ export default function PhotographyPage() {
 
     return (
         <div className="container">
-            <section className="page-hero">
+            <section className="hero" style={{ paddingBottom: '2rem' }}>
                 <span className="hero-tag">02 — Photography</span>
-                <h1 className="page-heading">Photography</h1>
-                <p className="page-desc">
-                    Analog 35mm film — street scenes, intimate portraits, and
+                <h1>Photography</h1>
+                <p className="hero-intro">
+                    Street scenes, intimate portraits, and
                     Nordic landscapes.
                 </p>
+                <br />
+                <br />
+                <br />
             </section>
 
             <div className="artwork-grid photography-grid">

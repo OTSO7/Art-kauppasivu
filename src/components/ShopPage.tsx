@@ -41,13 +41,16 @@ export default function ShopPage() {
 
     return (
         <div className="container">
-            <section className="page-hero">
+            <section className="hero" style={{ paddingBottom: '2rem' }}>
                 <span className="hero-tag">Shop</span>
-                <h1 className="page-heading">Shop</h1>
-                <p className="page-desc">
+                <h1>Shop</h1>
+                <p className="hero-intro">
                     Original oil paintings and limited edition archival giclée prints.
                     Each print is signed and numbered.
                 </p>
+                <br />
+                <br />
+                <br />
             </section>
 
             {/* filters + cart toggle */}

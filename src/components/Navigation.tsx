@@ -13,7 +13,9 @@ export default function Navigation() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <Link to="/" className="site-logo">Otto Saarimaa</Link>
+        <Link to="/" className="site-logo" style={{ padding: 0 }}>
+          <img src="/assets/logo/osaarimaa.png" alt="O.Saarimaa" style={{ height: '52px', width: 'auto' }} />
+        </Link>
         <nav className="site-nav">
           {links.map((l) => (
             <Link

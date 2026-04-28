@@ -58,61 +58,55 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
 
                         <div className="modal-layout">
                             {/* Image side */}
-                            <div className="modal-image-container">
+                            <div className="modal-image-container" onClick={onClose}>
                                 {artwork.image ? (
-                                    <img src={artwork.image} alt={artwork.title} className="modal-image" />
+                                    <img src={artwork.image} alt={artwork.title} className="modal-image" onClick={(e) => e.stopPropagation()} />
                                 ) : (
-                                    <div className="modal-placeholder">{artwork.placeholder}</div>
+                                    <div className="modal-placeholder" onClick={(e) => e.stopPropagation()}>{artwork.placeholder}</div>
                                 )}
                             </div>
 
                             {/* Details side */}
                             <div className="modal-details">
-                                <div className="modal-header">
-                                    <h2 className="modal-title">{artwork.title}</h2>
-                                    <p className="modal-meta">{artwork.meta}</p>
-                                </div>
+                                <h2 className="modal-title">{artwork.title}</h2>
 
-                                <div className="modal-separator" />
-
-                                <div className="modal-shop-info">
-                                    <h3 className="shop-info-title">Availability</h3>
-
-                                    {/* Original Painting Logic */}
-                                    <div className="shop-status-row">
-                                        <span className="status-label">Original:</span>
-                                        {originalItem ? (
-                                            originalItem.available ? (
-                                                <span className="status-value available">Available — €{originalItem.price}</span>
-                                            ) : (
-                                                <span className="status-value sold">Sold</span>
-                                            )
-                                        ) : (
-                                            <span className="status-value hidden">Not available</span>
-                                        )}
+                                <div className="info-list">
+                                    <div className="info-item">
+                                        <span className="info-label">Medium & Year</span>
+                                        <span className="info-value">{artwork.meta}</span>
                                     </div>
 
-                                    {/* Prints Logic */}
-                                    <div className="shop-status-row">
-                                        <span className="status-label">Prints:</span>
-                                        {printItem ? (
-                                            printItem.available ? (
-                                                <span className="status-value available">Available — from €{printItem.price}</span>
-                                            ) : (
-                                                <span className="status-value sold">Sold out</span>
-                                            )
-                                        ) : (
-                                            <span className="status-value hidden">No prints available</span>
-                                        )}
-                                    </div>
-
-                                    {/* Shop CTA */}
-                                    {(originalItem?.available || printItem?.available) && (
-                                        <Link to="/shop" className="modal-shop-btn" onClick={onClose}>
-                                            View in Shop <ArrowRight size={16} />
-                                        </Link>
+                                    {(originalItem?.dimensions || printItem?.dimensions) && (
+                                        <div className="info-item">
+                                            <span className="info-label">Dimensions</span>
+                                            <span className="info-value">{originalItem?.dimensions || printItem?.dimensions}</span>
+                                        </div>
                                     )}
+
+                                    <div className="info-item">
+                                        <span className="info-label">Availability</span>
+                                        {originalItem && (
+                                            <span className="info-value">
+                                                Original: {originalItem.available ? `€${originalItem.price}` : <span className="status-value sold">Sold</span>}
+                                            </span>
+                                        )}
+                                        {printItem && (
+                                            <span className="info-value">
+                                                Prints: {printItem.available ? `From €${printItem.price}` : <span className="status-value sold">Sold out</span>}
+                                            </span>
+                                        )}
+                                        {(!originalItem && !printItem) && (
+                                            <span className="info-value status-value sold">Not available for purchase</span>
+                                        )}
+                                    </div>
                                 </div>
+
+                                {/* Shop CTA */}
+                                {(originalItem?.available || printItem?.available) && (
+                                    <Link to="/shop" className="modal-shop-btn" onClick={onClose}>
+                                        View inside Shop <ArrowRight size={16} />
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </motion.div>
