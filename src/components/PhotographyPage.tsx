@@ -1,6 +1,27 @@
 import { useState } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { photography, Artwork } from '../data';
 import ArtworkModal from './ArtworkModal';
+import LazyImage from './LazyImage';
+
+const containerVars: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const itemVars: Variants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, ease: [0.25, 1, 0.25, 1] }
+    }
+};
 
 export default function PhotographyPage() {
     const [selectedArt, setSelectedArt] = useState<Artwork | null>(null);
@@ -19,17 +40,22 @@ export default function PhotographyPage() {
                 <br />
             </section>
 
-            <div className="artwork-grid photography-grid">
+            <div
+                className="artwork-grid photography-grid"
+            >
                 {photography.map((art, i) => (
                     <div
                         key={art.id}
                         className={`artwork-card ${art.span} ${art.aspect}`}
-                        style={{ animationDelay: `${i * 80}ms` }}
                         onClick={() => setSelectedArt(art)}
                     >
                         <div className="image-wrapper">
                             {art.image ? (
-                                <img src={art.image} alt={art.title} className="placeholder-img" />
+                                <LazyImage
+                                    src={art.image}
+                                    alt={art.title}
+                                    priority={i === 0}
+                                />
                             ) : (
                                 <div className="placeholder-img">{art.placeholder}</div>
                             )}

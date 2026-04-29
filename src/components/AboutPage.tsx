@@ -1,12 +1,26 @@
+import { motion } from 'framer-motion';
+
 export default function AboutPage() {
   return (
     <div className="container">
-      <section className="hero" style={{ paddingBottom: '2rem' }}>
+      <motion.section
+        className="hero"
+        style={{ paddingBottom: '2rem' }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.25, 1, 0.25, 1] }}
+      >
         <span className="hero-tag">About</span>
         <h1>About</h1>
-      </section>
+      </motion.section>
 
-      <div className="about-layout">
+      <motion.div
+        className="about-layout"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.25, 1] }}
+      >
         <div className="about-text">
           <p>
             Visual artist and photographer based in Finland.
@@ -40,7 +54,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
