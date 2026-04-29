@@ -15,6 +15,7 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 25 });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
@@ -50,6 +51,7 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     // Reset size index when artwork changes
     useEffect(() => {
         setSelectedSizeIndex(0);
+        setIsLightboxOpen(false);
     }, [artwork]);
 
     if (!artwork) return null;
@@ -99,12 +101,14 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
                                         <div className="embla__container">
                                             {album.map((img, i) => (
                                                 <div className="embla__slide" key={i}>
-                                                    <LazyImage
-                                                        src={img}
-                                                        alt={`${artwork.title} view ${i + 1}`}
-                                                        className="modal-image-carousel"
-                                                        priority={i === 0}
-                                                    />
+                                                    <div className="modal-image-clickable" onClick={() => setIsLightboxOpen(true)}>
+                                                        <LazyImage
+                                                            src={img}
+                                                            alt={`${artwork.title} view ${i + 1}`}
+                                                            className="modal-image-carousel"
+                                                            priority={i === 0}
+                                                        />
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
@@ -131,7 +135,9 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
                                 ) : (
                                     <div className="modal-single-image">
                                         {artwork.image ? (
-                                            <img src={artwork.image} alt={artwork.title} className="modal-image" />
+                                            <div className="modal-image-clickable" onClick={() => setIsLightboxOpen(true)}>
+                                                <img src={artwork.image} alt={artwork.title} className="modal-image" />
+                                            </div>
                                         ) : (
                                             <div className="modal-placeholder">{artwork.placeholder}</div>
                                         )}
@@ -227,6 +233,38 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
                     </motion.div>
                 </motion.div>
             )}
+
+            {/* Lightbox Overlay */}
+            <AnimatePresence>
+                {isLightboxOpen && (
+                    <motion.div
+                        className="lightbox-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsLightboxOpen(false)}
+                    >
+                        <button className="lightbox-close" onClick={() => setIsLightboxOpen(false)}>
+                            <X size={32} />
+                        </button>
+
+                        <motion.div
+                            className="lightbox-content"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <img
+                                src={album[selectedIndex] || artwork.image}
+                                alt={artwork.title}
+                                className="lightbox-image"
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </AnimatePresence>
     );
 }

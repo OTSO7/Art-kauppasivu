@@ -922,67 +922,129 @@ img {
   .modal-overlay {
     padding: 0;
     align-items: flex-end;
-    /* Slide up from bottom on mobile */
+    background: rgba(0, 0, 0, 0.4);
   }
 
   .modal-content {
     flex-direction: column;
     width: 100%;
-    height: 92vh;
-    /* Semi-full height to keep some context */
-    max-height: 92vh;
-    border-radius: 20px 20px 0 0;
-    overflow-y: auto;
+    height: 96vh;
+    max-height: 96vh;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    /* NO SCROLL */
+    display: flex;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
   }
 
   .modal-layout {
     flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    /* NO SCROLL */
   }
 
   .modal-image-container {
-    padding: 1rem;
-    min-height: auto;
-    aspect-ratio: 4/5;
+    flex: 0 0 auto;
+    height: 42vh;
+    /* Slightly smaller to fit info */
+    padding: 1.5rem;
     background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .embla__slide,
-  .modal-single-image {
-    padding: 1rem;
-  }
-
-  .modal-image-carousel,
-  .modal-image {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  .modal-image,
+  .modal-image-carousel {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   }
 
   .modal-details {
-    padding: 1.5rem 1.5rem 4rem;
-    /* Extra bottom padding for scroll space */
+    flex: 1;
+    overflow: hidden;
+    /* NO SCROLL */
+    padding: 1.5rem 1.25rem 2rem;
     border-left: none;
+    border-top: 1px solid var(--border-light);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Spread content to fill */
   }
 
   .modal-title {
-    font-size: 2.25rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .info-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two column grid saves space */
+    gap: 1rem 0.75rem;
     margin-bottom: 1.5rem;
   }
 
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .info-label {
+    font-size: 0.65rem;
+  }
+
+  .info-value {
+    font-size: 0.9rem;
+  }
+
+  .prints-note {
+    font-size: 0.8rem;
+    padding-top: 1rem;
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .modal-actions {
+    margin-top: auto;
+    /* Push to bottom */
+  }
+
+  .modal-shop-btn {
+    padding: 1rem;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+
   .modal-close {
-    background: var(--surface);
-    color: var(--text-primary);
     top: 1rem;
     right: 1rem;
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 34px;
+    height: 34px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    opacity: 0.6;
+    z-index: 20;
   }
 
   .embla__prev,
   .embla__next {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(4px);
+    width: 32px;
+    height: 32px;
+  }
+
+  .embla__dots {
+    bottom: 0.75rem;
   }
 }
 
@@ -1618,4 +1680,71 @@ img {
   align-items: center;
   justify-content: center;
   padding: 3rem;
+}
+
+.modal-image-clickable {
+  cursor: zoom-in;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 95vw;
+  max-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 2100;
+  padding: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .lightbox-overlay {
+    padding: 1rem;
+  }
+
+  .lightbox-close {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
 }

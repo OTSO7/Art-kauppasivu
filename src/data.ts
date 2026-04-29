@@ -64,7 +64,7 @@ export const paintings: Artwork[] = [
         meta: 'Oil on canvas, 2025',
         price: '700 €',
         dimensions: '40 x 30 cm',
-        imagesCount: 2,
+        imagesCount: 0,
         hasPrints: false,
         status: 'sold'
     }),
