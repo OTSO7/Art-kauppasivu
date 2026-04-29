@@ -316,12 +316,33 @@ img {
   object-fit: cover;
   position: relative;
   z-index: 2;
-  /* instant reveal */
-  opacity: 1;
+
+  /* Initial state: hidden + blurred + slightly scaled */
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(1.02);
+
+  /* Luxurious reveal transition */
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    filter 1.2s var(--ease),
+    transform 1.2s var(--ease);
 }
 
-.preview-card:hover .preview-img img {
+.preview-img img.is-revealed,
+.image-wrapper img.is-revealed {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.preview-card:hover .preview-img img.is-revealed {
+  /* Hover scale must be applied relatively or override if it's already shown */
   transform: scale(1.05);
+}
+
+.artwork-card:hover .image-wrapper img.is-revealed {
+  transform: scale(1.03);
 }
 
 .preview-info {
@@ -390,7 +411,7 @@ img {
 }
 
 .artwork-card .image-wrapper img {
-  transition: transform 1.5s var(--ease);
+  /* Transition handled by base img class to avoid conflicts */
 }
 
 .artwork-card:hover .image-wrapper img {

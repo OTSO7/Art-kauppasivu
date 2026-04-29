@@ -51,7 +51,8 @@ export default function PaintingsPage() {
                                 <LazyImage
                                     src={art.image}
                                     alt={art.title}
-                                    priority={i === 0}
+                                    priority={i < 4}
+                                    delay={i % 4 * 0.1}
                                 />
                             ) : (
                                 <div className="placeholder-img">{art.placeholder}</div>

@@ -55,7 +55,8 @@ export default function HomePage() {
                     <LazyImage
                       src={art.image}
                       alt={art.title}
-                      priority={idx === 0}
+                      priority={true}
+                      delay={idx * 0.1}
                     />
                   ) : (
                     <div className="placeholder-img">{art.placeholder}</div>
@@ -89,7 +90,12 @@ export default function HomePage() {
               <Link to="/photography" className="preview-card">
                 <div className="preview-img">
                   {art.image ? (
-                    <LazyImage src={art.image} alt={art.title} />
+                    <LazyImage
+                      src={art.image}
+                      alt={art.title}
+                      priority={true}
+                      delay={idx * 0.1}
+                    />
                   ) : (
                     <div className="placeholder-img">{art.placeholder}</div>
                   )}

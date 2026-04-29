@@ -1,26 +1,39 @@
+import { useState, useEffect } from 'react';
+
 interface LazyImageProps {
     src: string;
     alt: string;
     className?: string;
     priority?: boolean;
+    delay?: number;
 }
 
 /**
- * Ultra-optimized image component.
- * Uses native browser loading for minimum latency.
- * No React-state controlled delays or complex animations.
+ * Sequential Reveal Optimized Image.
+ * Combines high-speed parallel loading with a controlled visual staggered reveal.
  */
-export default function LazyImage({ src, alt, className = '', priority = false }: LazyImageProps) {
+export default function LazyImage({ src, alt, className = '', priority = false, delay = 0 }: LazyImageProps) {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [shouldShow, setShouldShow] = useState(false);
+
+    // Trigger reveal only after image is loaded AND staggered delay is met
+    useEffect(() => {
+        if (isLoaded) {
+            const timer = setTimeout(() => {
+                setShouldShow(true);
+            }, delay * 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoaded, delay]);
+
     return (
         <img
             src={src}
             alt={alt}
-            className={`instant-image ${className}`}
+            className={`instant-image ${shouldShow ? 'is-revealed' : ''} ${className}`}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
-            style={{
-                opacity: 1
-            }}
+            onLoad={() => setIsLoaded(true)}
             // @ts-ignore - fetchpriority is a new attribute
             fetchpriority={priority ? 'high' : 'auto'}
         />
