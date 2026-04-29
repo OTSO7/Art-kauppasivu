@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage';
@@ -16,6 +17,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <BrowserRouter>
+      <Analytics />
       <ScrollToTop />
       <Navigation />
       <main className="site-main">

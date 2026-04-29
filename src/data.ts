@@ -26,9 +26,9 @@ export interface Artwork {
  * /assets/artworks/[slug]/1.webp, 2.webp...
  */
 function createArt(slug: string, data: Partial<Artwork> & { imagesCount?: number }): Artwork {
-    const { imagesCount = 0, ...rest } = data;
+    const { imagesCount = 0, type = 'painting', ...rest } = data;
 
-    const image = `/assets/artworks/${slug}/main.webp`;
+    const image = data.image || `/assets/artworks/${slug}/main.webp`;
     const images = imagesCount > 0
         ? [image, ...Array.from({ length: imagesCount }, (_, i) => `/assets/artworks/${slug}/${i + 1}.webp`)]
         : [image];
@@ -42,7 +42,7 @@ function createArt(slug: string, data: Partial<Artwork> & { imagesCount?: number
         placeholder: data.placeholder || 'artwork',
         image,
         images,
-        type: data.type || 'painting',
+        type,
         ...rest
     };
 }
