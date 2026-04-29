@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import HomePage from './components/HomePage';
 import PaintingsPage from './components/PaintingsPage';
 import PhotographyPage from './components/PhotographyPage';
-import ShopPage from './components/ShopPage';
 import AboutPage from './components/AboutPage';
 
 function ScrollToTop() {
@@ -24,7 +23,6 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/paintings" element={<PaintingsPage />} />
           <Route path="/photography" element={<PhotographyPage />} />
-          <Route path="/shop" element={<ShopPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

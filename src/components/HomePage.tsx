@@ -75,21 +75,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* shop cta */}
-      <section className="section">
-        <div className="section-divider" />
-        <div className="shop-cta">
-          <div className="shop-cta-text">
-            <h2 className="section-title">Shop</h2>
-            <p className="shop-cta-desc">
-              Original paintings and limited edition archival prints available for purchase.
-            </p>
-          </div>
-          <Link to="/shop" className="btn-primary">
-            Browse Shop <span className="arrow">→</span>
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

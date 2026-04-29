@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Artwork, shopItems } from '../data';
+import { Artwork } from '../data';
 
 interface ArtworkModalProps {
     artwork: Artwork | null;
@@ -24,15 +23,6 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
     }, [isOpen]);
 
     if (!artwork) return null;
-
-    // Find associated shop items to show availability
-    const originalItem = shopItems.find(
-        (s) => s.category === 'painting' && s.title.toLowerCase() === artwork.title.toLowerCase()
-    );
-
-    const printItem = shopItems.find(
-        (s) => s.category === 'print' && s.title.toLowerCase().includes(artwork.title.toLowerCase())
-    );
 
     return (
         <AnimatePresence>
@@ -76,37 +66,17 @@ export default function ArtworkModal({ artwork, isOpen, onClose }: ArtworkModalP
                                         <span className="info-value">{artwork.meta}</span>
                                     </div>
 
-                                    {(originalItem?.dimensions || printItem?.dimensions) && (
+                                    {artwork.price && (
                                         <div className="info-item">
-                                            <span className="info-label">Dimensions</span>
-                                            <span className="info-value">{originalItem?.dimensions || printItem?.dimensions}</span>
+                                            <span className="info-label">Price</span>
+                                            <span className="info-value">{artwork.price}</span>
                                         </div>
                                     )}
-
-                                    <div className="info-item">
-                                        <span className="info-label">Availability</span>
-                                        {originalItem && (
-                                            <span className="info-value">
-                                                Original: {originalItem.available ? `€${originalItem.price}` : <span className="status-value sold">Sold</span>}
-                                            </span>
-                                        )}
-                                        {printItem && (
-                                            <span className="info-value">
-                                                Prints: {printItem.available ? `From €${printItem.price}` : <span className="status-value sold">Sold out</span>}
-                                            </span>
-                                        )}
-                                        {(!originalItem && !printItem) && (
-                                            <span className="info-value status-value sold">Not available for purchase</span>
-                                        )}
-                                    </div>
                                 </div>
 
-                                {/* Shop CTA */}
-                                {(originalItem?.available || printItem?.available) && (
-                                    <Link to="/shop" className="modal-shop-btn" onClick={onClose}>
-                                        View inside Shop <ArrowRight size={16} />
-                                    </Link>
-                                )}
+                                <a href={`mailto:art@osaarimaa.com?subject=Inquiry: ${artwork.title}`} className="modal-shop-btn">
+                                    Osta teos / Inquire about this piece <ArrowRight size={16} />
+                                </a>
                             </div>
                         </div>
                     </motion.div>
