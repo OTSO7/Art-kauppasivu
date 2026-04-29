@@ -56,6 +56,7 @@ export default function PhotographyPage() {
                                     alt={art.title}
                                     priority={i < 4}
                                     delay={i % 4 * 0.1}
+                                    objectPosition={art.objectPosition}
                                 />
                             ) : (
                                 <div className="placeholder-img">{art.placeholder}</div>

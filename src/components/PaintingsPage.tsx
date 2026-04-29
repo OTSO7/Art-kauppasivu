@@ -47,12 +47,16 @@ export default function PaintingsPage() {
                         onClick={() => setSelectedArt(art)}
                     >
                         <div className="image-wrapper">
+                            {art.status === 'sold' && (
+                                <div className="status-badge sold">Sold</div>
+                            )}
                             {art.image ? (
                                 <LazyImage
                                     src={art.image}
                                     alt={art.title}
                                     priority={i < 4}
                                     delay={i % 4 * 0.1}
+                                    objectPosition={art.objectPosition}
                                 />
                             ) : (
                                 <div className="placeholder-img">{art.placeholder}</div>

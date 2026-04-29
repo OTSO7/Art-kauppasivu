@@ -28,9 +28,7 @@ export default function AboutPage() {
           <p>
             My practice combines oil on canvas, 35mm film, and digital photography. Grounded in a documentary approach, the work captures unforced moments, natural light, and the textures of the everyday.
           </p>
-          <p>
-            Kameralinssin läpi nähty valo siirtyy nykyään yhä useammin suoraan kankaalle siveltimenvetoina. Se mikä alkoi valon taltioimisena filmille, on syventynyt haluun rakentaa tuo valo kerros kerrokselta itse.
-          </p>
+
         </div>
         <div className="about-details">
           <div className="detail-block">
@@ -48,8 +46,8 @@ export default function AboutPage() {
           <div className="detail-block">
             <div className="detail-label">Contact</div>
             <div className="detail-value">
-              <a href="mailto:art@osaarimaa.com" className="about-email">
-                art@osaarimaa.com
+              <a href="mailto:saarimaa7@gmail.com" className="about-email">
+                saarimaa7@gmail.com
               </a>
             </div>
           </div>

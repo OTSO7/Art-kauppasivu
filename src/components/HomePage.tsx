@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
-import { paintings, photography } from '../data';
+import { paintings, photography, Artwork } from '../data';
 import LazyImage from './LazyImage';
+import ArtworkModal from './ArtworkModal';
 
 const containerVars: Variants = {
   hidden: { opacity: 0 },
@@ -23,6 +25,8 @@ const itemVars: Variants = {
 };
 
 export default function HomePage() {
+  const [selectedArt, setSelectedArt] = useState<Artwork | null>(null);
+
   return (
     <div className="container">
       {/* hero */}
@@ -49,14 +53,22 @@ export default function HomePage() {
         <div className="preview-row">
           {paintings.slice(0, 3).map((art, idx) => (
             <div key={art.id}>
-              <Link to="/paintings" className="preview-card">
+              <div
+                className="preview-card"
+                onClick={() => setSelectedArt(art)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="preview-img">
+                  {art.status === 'sold' && (
+                    <div className="status-badge sold">Sold</div>
+                  )}
                   {art.image ? (
                     <LazyImage
                       src={art.image}
                       alt={art.title}
                       priority={true}
                       delay={idx * 0.1}
+                      objectPosition={art.objectPosition}
                     />
                   ) : (
                     <div className="placeholder-img">{art.placeholder}</div>
@@ -66,7 +78,7 @@ export default function HomePage() {
                   <div className="preview-title">{art.title}</div>
                   <div className="preview-meta">{art.meta}</div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -87,7 +99,11 @@ export default function HomePage() {
         <div className="preview-row">
           {photography.slice(0, 3).map((art, idx) => (
             <div key={art.id}>
-              <Link to="/photography" className="preview-card">
+              <div
+                className="preview-card"
+                onClick={() => setSelectedArt(art)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="preview-img">
                   {art.image ? (
                     <LazyImage
@@ -95,6 +111,7 @@ export default function HomePage() {
                       alt={art.title}
                       priority={true}
                       delay={idx * 0.1}
+                      objectPosition={art.objectPosition}
                     />
                   ) : (
                     <div className="placeholder-img">{art.placeholder}</div>
@@ -104,12 +121,17 @@ export default function HomePage() {
                   <div className="preview-title">{art.title}</div>
                   <div className="preview-meta">{art.meta}</div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
+      <ArtworkModal
+        artwork={selectedArt}
+        isOpen={!!selectedArt}
+        onClose={() => setSelectedArt(null)}
+      />
     </div>
   );
 }
