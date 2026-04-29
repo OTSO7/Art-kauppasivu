@@ -163,6 +163,24 @@ img {
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  .site-header {
+    height: 80px;
+  }
+
+  .site-logo img {
+    height: 38px !important;
+  }
+
+  .site-nav {
+    gap: 1.25rem;
+  }
+
+  .site-nav a {
+    font-size: 0.8rem;
+  }
+}
+
 /* ========================================
    hero
    ======================================== */
@@ -902,15 +920,19 @@ img {
 
 @media (max-width: 900px) {
   .modal-overlay {
-    padding: 1rem;
+    padding: 0;
+    align-items: flex-end;
+    /* Slide up from bottom on mobile */
   }
 
   .modal-content {
     flex-direction: column;
-    height: auto;
-    max-height: 90vh;
+    width: 100%;
+    height: 92vh;
+    /* Semi-full height to keep some context */
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
     overflow-y: auto;
-    border-radius: 8px;
   }
 
   .modal-layout {
@@ -918,18 +940,31 @@ img {
   }
 
   .modal-image-container {
-    padding: 2rem;
-    min-height: 45vh;
+    padding: 1rem;
+    min-height: auto;
+    aspect-ratio: 4/5;
+    background: var(--surface);
   }
 
+  .embla__slide,
+  .modal-single-image {
+    padding: 1rem;
+  }
+
+  .modal-image-carousel,
   .modal-image {
-    max-width: calc(100% - 4rem);
-    max-height: calc(100% - 4rem);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
   .modal-details {
-    padding: 2.5rem;
+    padding: 1.5rem 1.5rem 4rem;
+    /* Extra bottom padding for scroll space */
     border-left: none;
+  }
+
+  .modal-title {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
   }
 
   .modal-close {
@@ -937,6 +972,34 @@ img {
     color: var(--text-primary);
     top: 1rem;
     right: 1rem;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .embla__prev,
+  .embla__next {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .hero {
+    padding: 6rem 0 3rem;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
 }
 

@@ -62,7 +62,7 @@ export const paintings: Artwork[] = [
         title: 'Maj Grete',
         type: 'painting',
         meta: 'Oil on canvas, 2025',
-        price: '1 800 €',
+        price: '700 €',
         dimensions: '40 x 30 cm',
         imagesCount: 2,
         hasPrints: false,
